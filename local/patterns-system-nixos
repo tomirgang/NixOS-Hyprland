@@ -1,0 +1,61 @@
+R /etc
+R /var/lib
+R /var/backups/frame
+R /root
+R /home/tom
+
+# Flake und persönliches Wissens-Repo: behalten (vor den Excludes)
++ /home/tom/git/nixos-config
++ /home/tom/knowledge/private_knoweldge
+
+# /var/lib: reproduzierbar oder flüchtig
+- /var/lib/docker
+- /var/lib/flatpak
+- /var/lib/systemd/coredump
+
+# Build-Ausgaben, wo auch immer
+- **/sstate-cache
+- **/tmp-glibc
+- **/tmp-musl
+- **/node_modules
+- **/target/debug
+- **/target/release
+- **/__pycache__
+- **/.venv
+- **/build/CMakeFiles
+
+# Git-Repositories und Klone
+- /home/tom/git
+- /home/tom/knowledge
+- /home/tom/layers
+- /home/tom/sandbox
+- /home/tom/infra
+- /home/tom/exercism
+- /home/tom/.logseq/git
+
+# Home: reproduzierbar oder flüchtig
+- /home/tom/Downloads
+- /home/tom/go
+- /home/tom/.cache
+- /home/tom/.espressif
+- /home/tom/.rustup
+- /home/tom/.cargo/registry
+- /home/tom/.cargo/git
+- /home/tom/.npm
+- /home/tom/.vscode/extensions
+- /home/tom/.local/share/lean-ctx
+- /home/tom/.local/share/eim
+- /home/tom/.local/share/containers
+- /home/tom/.local/share/flatpak
+- /home/tom/.local/share/uv
+- /home/tom/.local/share/garmin
+- /home/tom/.local/share/Trash
+- /home/tom/.var/app
+- /home/tom/.config/google-chrome/*/Service Worker/CacheStorage
+- /home/tom/.config/Code/Cache*
+- /home/tom/.config/Code/User/workspaceStorage
+- /home/tom/.mozilla/firefox/*/cache2
+- /home/tom/.thunderbird/*/cache2
+- /home/tom/core.*
+- /home/tom/.claude.json.*
+# Nextcloud ist ein Symlink; das Ziel liegt in ./data

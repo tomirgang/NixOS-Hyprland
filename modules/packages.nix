@@ -104,7 +104,7 @@
     bottom
     baobab
     btrfs-progs
-    brave-origin
+    # brave-origin # frame: Chrome is the browser (local/apps.nix)
     cmatrix
     distrobox
     dua

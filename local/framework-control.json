@@ -1,0 +1,88 @@
+{
+  "fan": {
+    "mode": "curve",
+    "manual": {
+      "duty_pct": 20
+    },
+    "curve": {
+      "sensors": [
+        "Battery",
+        "F57397_VCCGT",
+        "F75303_CPU",
+        "F75303_DDR",
+        "F75303_Local",
+        "PECI"
+      ],
+      "points": [
+        [
+          1,
+          20
+        ],
+        [
+          53,
+          20
+        ],
+        [
+          78,
+          21
+        ],
+        [
+          82,
+          79
+        ],
+        [
+          91,
+          100
+        ]
+      ],
+      "hysteresis_c": 1,
+      "rate_limit_pct_per_step": 1,
+      "poll_ms": 500
+    },
+    "calibration": {
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          20,
+          2123
+        ],
+        [
+          40,
+          4137
+        ],
+        [
+          60,
+          5791
+        ],
+        [
+          80,
+          7050
+        ],
+        [
+          100,
+          8379
+        ]
+      ],
+      "updated_at": 1787072396
+    }
+  },
+  "power": {
+    "ac": null,
+    "battery": null
+  },
+  "battery": {},
+  "updates": {
+    "auto_install": false
+  },
+  "telemetry": {
+    "poll_ms": 2000,
+    "retain_seconds": 1800
+  },
+  "ui": {},
+  "framework_tool": {
+    "latest": true
+  }
+}

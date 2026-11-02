@@ -1,0 +1,5 @@
+# borg patterns for frame-data (first match wins)
+R /run/media/tom/FrameData/tom/Nextcloud
+- /run/media/tom/FrameData/tom/Nextcloud/.sync_*.db*
+- /run/media/tom/FrameData/tom/Nextcloud/**/.nextcloudsync.log
+- /run/media/tom/FrameData/tom/Nextcloud/**/.owncloudsync.log
