@@ -110,11 +110,6 @@ in {
   # KooL enables zsh globally; frame uses bash only (NixOS.md 2.1)
   programs.zsh.enable = lib.mkForce false;
 
-  # KooL's polkit-agent unit calls lib.getExe hyprpolkitagent (bin/), the
-  # binary lives in libexec/; the unit fails. hyprpolkitagent is started by
-  # the dots and already runs, so the unit is not needed.
-  systemd.user.services.polkit-agent.enable = lib.mkForce false;
-
   # KooL's nh module points to ~/NixOS-Hyprland
   programs.nh.flake = lib.mkForce "/home/tom/git/nixos-config";
 

@@ -16,9 +16,10 @@
 #  stay disabled: it always writes ~/.config/hypr/hyprland.conf, which Hyprland
 #  would then load in preference to hyprland.lua.
 {
+  config,
   pkgs,
-  lib,
   inputs,
+  username,
   ...
 }: {
   programs.hyprland = {
@@ -35,38 +36,31 @@
   # second bar on top of the dotfiles' one.
   programs.waybar.enable = false;
 
-  # Polkit authentication agent for the Hyprland session.
-  # Prefers hyprpolkitagent, falls back to mate-polkit.
-  systemd.user.services.polkit-agent = let
-    polkitAgentScript = pkgs.writeShellScript "polkit-agent" ''
-      if [ -x "${lib.getExe pkgs.hyprpolkitagent}" ]; then
-        exec "${lib.getExe pkgs.hyprpolkitagent}"
-      fi
-      if [ -x "${lib.getExe' pkgs.mate-polkit "polkit-mate-authentication-agent-1"}" ]; then
-        exec "${lib.getExe' pkgs.mate-polkit "polkit-mate-authentication-agent-1"}"
-      fi
-      echo "No supported polkit agent found." >&2
-      exit 1
-    '';
-  in {
-    description = "Polkit authentication agent";
-    after = ["graphical-session.target"];
-    partOf = ["graphical-session.target"];
-    wantedBy = ["default.target"];
-    serviceConfig = {
-      ExecStart = polkitAgentScript;
-      Restart = "on-failure";
-      RestartSec = 1;
-    };
+  # Polkit authentication agent for the Hyprland session: the unit shipped
+  # with hyprpolkitagent (share/systemd/user), started with the graphical
+  # session. The dotfiles' Polkit.sh finds the running agent and skips.
+  systemd.packages = [pkgs.hyprpolkitagent];
+  systemd.user.services.hyprpolkitagent = {
+    wantedBy = ["graphical-session.target"];
+    after = ["dbus.service"];
   };
 
+  # hyprpolkitagent registers with polkitd only once at startup. When polkitd
+  # restarts (nixos-rebuild switch), the registration is lost and every polkit
+  # authentication fails with "no agent is available". Restart the agent of
+  # the user session once polkitd is ready again. try-restart is a no-op when
+  # the agent is not running; without a user manager (boot) the call fails and
+  # the leading "-" ignores it.
+  systemd.services.polkit.serviceConfig.ExecStartPost = [
+    "-${config.systemd.package}/bin/systemctl --user --machine=${username}@.host try-restart hyprpolkitagent.service"
+  ];
+
   # Session-level helpers that the programs.hyprland module does not provide on
-  # its own, plus the agents the unit above falls back to. Everything else that
-  # is Hyprland/Wayland related is in modules/home/hyprland.nix.
+  # its own. Everything else that is Hyprland/Wayland related is in
+  # modules/home/hyprland.nix.
   environment.systemPackages = with pkgs; [
     uwsm # session launcher behind programs.hyprland.withUWSM
-    hyprpolkitagent # primary agent used by the unit above
-    mate-polkit # fallback agent used by the unit above
+    hyprpolkitagent # agent behind the unit above
     kdePackages.polkit-kde-agent-1 # alternative agent kept available
   ];
 
