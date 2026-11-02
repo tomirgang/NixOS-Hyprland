@@ -51,4 +51,4 @@ if [ "$scan" -eq 1 ]; then
   vulnix --system || echo "==> vulnix exit code $?: findings above (or scan error)"
 fi
 
-echo "==> not covered here: flatpak update, rustup update, cargo/go/uv/krew tools (NixOS_TODO.md 5.6)"
+echo "==> user tools (flatpak, rustup, cargo/go/uv/krew) are covered by update_all"

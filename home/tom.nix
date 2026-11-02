@@ -11,6 +11,13 @@
     runtimeInputs = with pkgs; [git nix nh vulnix coreutils];
     text = builtins.readFile ./frame-update.sh;
   };
+  # User-level tools (flatpak, rustup, cargo, go, uv, krew), then frame-update;
+  # alias update_all. The tools themselves come from PATH, not from Nix.
+  updateAll = pkgs.writeShellApplication {
+    name = "update-all";
+    runtimeInputs = [frameUpdate];
+    text = builtins.readFile ./update-all.sh;
+  };
 in {
   imports = [
     ../modules/home/hyprland.nix
@@ -25,6 +32,7 @@ in {
       lla = "ls -la";
       lt = "ls --tree";
       nix_update = "frame-update";
+      update_all = "update-all";
     };
     initExtra = ''
       fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
@@ -80,6 +88,7 @@ in {
     rtk
     vulnix
     frameUpdate
+    updateAll
   ];
 
   systemd.user.services.lean-ctx-proxy = {
