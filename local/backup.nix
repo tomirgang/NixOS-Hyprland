@@ -106,7 +106,7 @@ in {
           encryption_passcommand = "cat /root/.config/borg/passphrase-system-nixos";
           ssh_command = sshCommand;
           remote_path = "borg-1.4";
-          upload_rate_limit = 800;
+          upload_rate_limit = 0; # unlimited (Debian since 2026-11-02, previously 800 KiB/s)
           keep_daily = 7;
           keep_weekly = 4;
           checks = [
@@ -141,7 +141,7 @@ in {
           encryption_passcommand = "cat /root/.config/borg/passphrase-data";
           ssh_command = sshCommand;
           remote_path = "borg-1.4";
-          upload_rate_limit = 800;
+          upload_rate_limit = 0; # unlimited (Debian since 2026-11-02, previously 800 KiB/s)
           keep_daily = 7;
           keep_weekly = 4;
           checks = [

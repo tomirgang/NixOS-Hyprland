@@ -4,6 +4,22 @@ R /var/backups/frame
 R /root
 R /home/tom
 
+# libvirt/QEMU: VM-Images, VM-Installationsmedien und RAM-Abbilder nie sichern
+# (kein globales *.iso: Nextcloud enthält Software-ISOs, die gesichert werden sollen)
+# (vor allen anderen Regeln, da die erste passende Regel gilt)
+- /home/tom/.local/share/libvirt/images
+- /home/tom/.config/libvirt/qemu/save
+- /home/tom/.config/libvirt/qemu/ram
+- /home/tom/.config/libvirt/qemu/dump
+- /var/lib/libvirt
+- **/*.qcow2
+- **/*.qcow
+- **/*.vmdk
+- **/*.vdi
+- **/*.vhd
+- **/*.vhdx
+- /home/tom/vm-shared/*.iso
+
 # Flake und persönliches Wissens-Repo: behalten (vor den Excludes)
 + /home/tom/git/nixos-config
 + /home/tom/knowledge/private_knoweldge

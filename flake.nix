@@ -92,7 +92,6 @@
     # rtk and framework-control come from nixpkgs.
     localOverlay = final: prev: {
       lean-ctx = final.callPackage ./pkgs/lean-ctx.nix {};
-      claude-desktop = final.callPackage ./pkgs/claude-desktop.nix {};
     };
 
     pkgs = import nixpkgs {
@@ -180,7 +179,7 @@
     packages.${system} = {
       waybar-weather = waybarWeatherPkg;
       hyprmod = hyprmodPkg;
-      inherit (pkgs) lean-ctx claude-desktop;
+      inherit (pkgs) lean-ctx;
     };
 
     nixosConfigurations = {

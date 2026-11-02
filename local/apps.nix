@@ -55,7 +55,6 @@
     vscode
     zed-editor
     claude-code
-    claude-desktop # pkgs/claude-desktop.nix (official .deb)
 
     # Monitoring
     nvtopPackages.intel
