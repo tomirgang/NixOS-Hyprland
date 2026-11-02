@@ -125,7 +125,15 @@ in {
       # substituters = ["https://hyprland.cachix.org"]; # with the Hyprland flake input
       # trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
     };
-    # Phase 5 (NixOS.md): nix.gc and nix.optimise
+    # Weekly GC of generations older than 30 days; programs.nh.clean stays
+    # disabled (modules/nh.nix) so that only one cleanup timer exists.
+    # Boot entries on the ESP are capped by configurationLimit above.
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    optimise.automatic = true;
   };
 
   # Electron apps on Wayland, Qt QML path for KooL (KooL default)
