@@ -9,22 +9,54 @@
   services.pcscd.enable = true;
   services.udev.packages = [pkgs.yubikey-personalization];
 
-  # U2F as sufficient factor; authfile default ~/.config/Yubico/u2f_keys,
-  # bound to origin pam://frame (same hostname as on Debian)
+  # libfido2 in nixpkgs is built with PC/SC. With pcscd running it reports the
+  # YubiKey twice (hidraw and pcsc://slot0); ssh then waits for a "select by
+  # touch" that times out with "device not found". OpenSSH and pam_u2f use a
+  # libfido2 without PC/SC, as on Debian. pam_u2f is a leaf package and is
+  # replaced by an overlay; openssh only via programs.ssh.package, an overlay
+  # would rebuild everything that depends on it.
+  nixpkgs.overlays = [
+    (final: prev: {
+      libfido2-nopcsc = prev.libfido2.override {withPcsclite = false;};
+      pam_u2f = prev.pam_u2f.override {libfido2 = final.libfido2-nopcsc;};
+    })
+  ];
+  programs.ssh.package = pkgs.openssh.override {libfido2 = pkgs.libfido2-nopcsc;};
+
+  # U2F as sufficient factor, password stays as fallback. Mapping files as on
+  # Debian (yubikey-setup-plan.md 3.5): root-owned under /etc/u2f with the
+  # fixed origin pam://yk-linux, independent of the hostname.
+  #   /etc/u2f/sudo   touch only        (sudo, polkit)
+  #   /etc/u2f/login  PIN + touch (-N)  (login, hyprlock; greetd includes login)
+  # The files are not managed by Nix; restore them from the Debian archive or
+  # create them with pamu2fcfg, then chown root:root and chmod 644.
   security.pam.u2f = {
     enable = true;
     control = "sufficient";
-    settings.cue = true;
+    settings = {
+      authfile = "/etc/u2f/sudo";
+      origin = "pam://yk-linux";
+      appid = "pam://yk-linux";
+      cue = true;
+      pinverification = 0;
+      userpresence = 1;
+    };
   };
-  security.pam.services = {
-    login.u2fAuth = true;
+  security.pam.services = let
+    # PIN + touch for interactive logins and the lock screen
+    u2fLogin = {
+      u2fAuth = true;
+      rules.auth.u2f.settings = {
+        authfile = lib.mkForce "/etc/u2f/login";
+        pinverification = lib.mkForce 1;
+        nouserok = true;
+      };
+    };
+  in {
+    login = u2fLogin;
+    hyprlock = u2fLogin;
     sudo.u2fAuth = true;
     polkit-1.u2fAuth = true;
-    hyprlock.u2fAuth = true;
-    greetd = {
-      u2fAuth = true;
-      fprintAuth = true;
-    };
     sshd = {
       unixAuth = lib.mkForce true;
       u2fAuth = false;
