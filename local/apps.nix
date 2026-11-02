@@ -78,7 +78,29 @@
     enable = true;
     drivers = [pkgs.brlaser];
   };
-  hardware.sane.enable = true;
+  # Brother DCP-1612W (reports itself as DCP-1610W series) over WLAN. The
+  # mDNS name follows the MAC address and survives a DHCP address change.
+  hardware.printers.ensurePrinters = [
+    {
+      name = "Brother_DCP-1612W";
+      description = "Brother DCP-1612W";
+      deviceUri = "ipp://BRNF889D2DD4E78.local/ipp/print";
+      model = "drv:///brlaser.drv/br1610.ppd";
+      ppdOptions.PageSize = "A4";
+    }
+  ];
+  # The device offers no eSCL/AirScan, only the proprietary Brother protocol
+  # (port 54921), hence brscan4 (unfree).
+  hardware.sane = {
+    enable = true;
+    brscan4 = {
+      enable = true;
+      netDevices.dcp1612w = {
+        model = "DCP-1610W";
+        nodename = "BRNF889D2DD4E78.local";
+      };
+    };
+  };
   # Default browser system-wide (SUPER B opens the default browser);
   # ~/.config/mimeapps.list takes precedence if present
   xdg.mime.defaultApplications = {
