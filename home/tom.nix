@@ -4,7 +4,14 @@
 # Home Manager modules only the Hyprland package set is used; git, btop, yazi,
 # ghostty, eza, tmux, nixvim and the overview would write into those
 # directories or clash with the settings below.
-{pkgs, ...}: {
+{pkgs, ...}: let
+  # Update routine (NixOS_TODO.md, Phase 5), alias nix_update
+  frameUpdate = pkgs.writeShellApplication {
+    name = "frame-update";
+    runtimeInputs = with pkgs; [git nix nh vulnix coreutils];
+    text = builtins.readFile ./frame-update.sh;
+  };
+in {
   imports = [
     ../modules/home/hyprland.nix
   ];
@@ -17,6 +24,7 @@
       la = "ls -a";
       lla = "ls -la";
       lt = "ls --tree";
+      nix_update = "frame-update";
     };
     initExtra = ''
       fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
@@ -70,6 +78,8 @@
     rsync
     lean-ctx
     rtk
+    vulnix
+    frameUpdate
   ];
 
   systemd.user.services.lean-ctx-proxy = {
