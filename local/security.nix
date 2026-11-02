@@ -25,6 +25,11 @@
       u2fAuth = true;
       fprintAuth = true;
     };
+    sshd = {
+      unixAuth = lib.mkForce true;
+      u2fAuth = false;
+      fprintAuth = false;
+    };
   };
 
   # KeePassXC provides the Secret Service, not gnome-keyring
@@ -66,6 +71,10 @@
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
     };
+    extraConfig = ''
+      Match Address 192.168.0.0/16,10.0.0.0/8
+        PasswordAuthentication yes
+    '';
   };
 
   programs.wireshark = {
