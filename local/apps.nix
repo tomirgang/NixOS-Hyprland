@@ -1,6 +1,5 @@
 # Desktop applications and system tools (NixOS.md 2.12, way S).
 # Flatpak stays enabled as fallback only (hosts/frame/config.nix).
-# Claude Desktop: no nixpkgs package; open point in NixOS.md section 4.
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     # Browser, mail, feeds
@@ -56,6 +55,7 @@
     vscode
     zed-editor
     claude-code
+    claude-desktop # pkgs/claude-desktop.nix (official .deb)
 
     # Monitoring
     nvtopPackages.intel

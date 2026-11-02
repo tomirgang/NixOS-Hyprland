@@ -9,7 +9,7 @@
   options,
   ...
 }: let
-  inherit (import ./variables.nix) keyboardLayout consoleKeyMap;
+  inherit (import ./variables.nix) keyboardLayout;
 in {
   imports = [
     ./users.nix
@@ -64,7 +64,9 @@ in {
 
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "en_US.UTF-8";
-  console.keyMap = consoleKeyMap;
+  # Console keymap generated from the xkb layout (EurKEY); also used in the
+  # systemd initrd for the LUKS passphrase
+  console.useXkbConfig = true;
 
   services = {
     xserver = {
