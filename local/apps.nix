@@ -1,6 +1,25 @@
 # Desktop applications and system tools (NixOS.md 2.12, way S).
 # Flatpak stays enabled as fallback only (hosts/frame/config.nix).
-{pkgs, ...}: {
+{pkgs, ...}: let
+  # gnome-calendar opens "Open in Settings" and the online account link via
+  # the D-Bus name org.gnome.Settings (action launch-panel). GNOME Settings
+  # hides panels whose desktop file says OnlyShowIn=GNOME, which applies to
+  # online-accounts under Hyprland. The wrapper sets XDG_CURRENT_DESKTOP for
+  # this process only, the D-Bus service file is rewritten to the wrapper.
+  gnome-settings = pkgs.symlinkJoin {
+    name = "gnome-control-center-hyprland";
+    paths = [pkgs.gnome-control-center];
+    nativeBuildInputs = [pkgs.makeWrapper];
+    postBuild = ''
+      wrapProgram $out/bin/gnome-control-center \
+        --set XDG_CURRENT_DESKTOP GNOME
+      svc=$out/share/dbus-1/services/org.gnome.Settings.service
+      rm $svc
+      sed "s|^Exec=[^ ]*|Exec=$out/bin/gnome-control-center|" \
+        ${pkgs.gnome-control-center}/share/dbus-1/services/org.gnome.Settings.service > $svc
+    '';
+  };
+in {
   environment.systemPackages = with pkgs; [
     # Browser, mail, feeds
     chromium
@@ -47,6 +66,7 @@
     crow-translate
     qalculate-gtk
     simple-scan
+    gnome-settings # see let block, needed by gnome-calendar
 
     # Terminals and editors (kitty, ghostty, wezterm come from KooL)
     gtkterm
@@ -76,6 +96,9 @@
   # Backend for gnome-calendar (home/tom.nix): calendar sources, reminders
   # and the "Manage Calendars" dialog need the EDS D-Bus services
   services.gnome.evolution-data-server.enable = true;
+  # Online accounts (Google, Nextcloud, Microsoft) for gnome-calendar: goa-daemon
+  # as D-Bus service, the panel comes from the wrapped GNOME Settings above
+  services.gnome.gnome-online-accounts.enable = true;
 
   # Printing (Brother laser) and scanning
   services.printing = {
