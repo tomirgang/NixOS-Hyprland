@@ -23,6 +23,14 @@
   ];
   programs.ssh.package = pkgs.openssh.override {libfido2 = pkgs.libfido2-nopcsc;};
 
+  # askpass for FIDO2 PIN and touch prompts without a TTY (git from GUI/IDE).
+  # Key passphrases in the agent go through gpg-agent and pinentry instead.
+  # Qt6 and native Wayland; KWallet is only used if it is running.
+  programs.ssh = {
+    enableAskPassword = true;
+    askPassword = "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
+  };
+
   # U2F as sufficient factor, password stays as fallback. Mapping files as on
   # Debian (yubikey-setup-plan.md 3.5): root-owned under /etc/u2f with the
   # fixed origin pam://yk-linux, independent of the hostname.
