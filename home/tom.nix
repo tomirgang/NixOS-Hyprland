@@ -92,6 +92,7 @@ in {
     updateAll
     zettlr
     marktext
+    bat
   ];
 
   systemd.user.services.lean-ctx-proxy = {
