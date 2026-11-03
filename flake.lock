@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793324397,
-        "narHash": "sha256-SY1tKCOq+TZbt7qUKdVjRszfFZGv5sKRc7wt5eL4VFY=",
+        "lastModified": 1793653143,
+        "narHash": "sha256-Qdlm3LxAWgd0O4wP0gWl+YerlUY6VMa1uEoeTKNs3ck=",
         "ref": "refs/heads/main",
-        "rev": "94f6648d282e55679250f9284e4bfce2ebf61657",
-        "revCount": 6,
+        "rev": "2904e384afc02182018b4eef77867f12607fe047",
+        "revCount": 7,
         "type": "git",
         "url": "https://justaguy.dev/drew/butterpal"
       },

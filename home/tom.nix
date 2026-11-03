@@ -90,6 +90,8 @@ in {
     vulnix
     frameUpdate
     updateAll
+    zettlr
+    marktext
   ];
 
   systemd.user.services.lean-ctx-proxy = {
