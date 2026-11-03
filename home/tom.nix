@@ -93,7 +93,19 @@ in {
     zettlr
     marktext
     bat
+    hugo
+    just
+    planify
+    gnome-calendar
   ];
+
+  # KooL's initial-boot.sh sets Flat-Remix themes once, which are not
+  # installed here; GTK apps then lack icons. Use the themes from
+  # modules/theme.nix instead.
+  dconf.settings."org/gnome/desktop/interface" = {
+    gtk-theme = "Adwaita-dark";
+    icon-theme = "Papirus-Dark";
+  };
 
   systemd.user.services.lean-ctx-proxy = {
     Unit.Description = "lean-ctx API Proxy";

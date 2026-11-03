@@ -73,6 +73,10 @@
     caligula
   ];
 
+  # Backend for gnome-calendar (home/tom.nix): calendar sources, reminders
+  # and the "Manage Calendars" dialog need the EDS D-Bus services
+  services.gnome.evolution-data-server.enable = true;
+
   # Printing (Brother laser) and scanning
   services.printing = {
     enable = true;
