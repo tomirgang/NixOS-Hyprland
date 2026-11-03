@@ -4,6 +4,7 @@
 pkgs.mkShell {
   packages = with pkgs; [
     kubectl
+    kubecolor
     kubernetes-helm
     kustomize
     fluxcd

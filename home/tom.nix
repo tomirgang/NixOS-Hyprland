@@ -97,6 +97,8 @@ in {
     just
     planify
     gnome-calendar
+    kubectl
+    kubecolor
   ];
 
   # KooL's initial-boot.sh sets Flat-Remix themes once, which are not
