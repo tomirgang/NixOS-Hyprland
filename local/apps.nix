@@ -107,11 +107,13 @@ in {
   };
   # Brother DCP-1612W (reports itself as DCP-1610W series) over WLAN. The
   # mDNS name follows the MAC address and survives a DHCP address change.
+  # Raw socket on port 9100: the IPP service on port 631 answers /ipp/print
+  # with 404 despite advertising it via mDNS (rp=ipp/print).
   hardware.printers.ensurePrinters = [
     {
       name = "Brother_DCP-1612W";
       description = "Brother DCP-1612W";
-      deviceUri = "ipp://BRNF889D2DD4E78.local/ipp/print";
+      deviceUri = "socket://BRNF889D2DD4E78.local:9100";
       model = "drv:///brlaser.drv/br1610.ppd";
       ppdOptions.PageSize = "A4";
     }
