@@ -167,6 +167,11 @@ in {
     exercism
 
     kind
+
+    # pdf tools
+    zathura
+    kdePackages.okular
+    pdfarranger
   ];
 
   # KooL's initial-boot.sh sets Flat-Remix themes once, which are not
