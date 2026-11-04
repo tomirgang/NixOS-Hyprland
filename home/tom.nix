@@ -166,7 +166,9 @@ in {
 
     exercism
 
+    # learn kubernetes
     kind
+    cloud-provider-kind
 
     # pdf tools
     zathura
