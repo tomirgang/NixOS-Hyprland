@@ -14,7 +14,7 @@
   };
 
   services.fwupd.enable = true;
-  services.fprintd.enable = true;
+  services.fprintd.enable = false;
   services.power-profiles-daemon.enable = true;
   services.thermald.enable = true;
   hardware.i2c.enable = true; # ddcutil for external monitors

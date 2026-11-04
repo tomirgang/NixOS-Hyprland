@@ -141,4 +141,12 @@ in {
   };
   environment.sessionVariables.EDITOR = "vim";
   environment.sessionVariables.VISUAL = "code --wait";
+
+  # The hypridle unit has a minimal PATH that hyprlock inherits when hypridle
+  # starts it. KooL's scripts need bash and notify-send from the system profile
+  # (Battery.sh in hyprlock, WallpaperDaemon.sh and notifications in hypridle).
+  systemd.user.services.hypridle.path = ["/run/current-system/sw"];
+  # hyprlock runs in the cgroup of hypridle. With the default control-group
+  # mode a stop or restart of hypridle kills it and leaves the session locked.
+  systemd.user.services.hypridle.serviceConfig.KillMode = "process";
 }
