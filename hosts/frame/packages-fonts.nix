@@ -4,7 +4,6 @@
     ps:
       with ps; [
         requests
-        pyquery # needed for hyprland-dots Weather script
       ]
   );
 in {

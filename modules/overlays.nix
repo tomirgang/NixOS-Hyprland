@@ -6,10 +6,6 @@
 # ==================================================
 {inputs, ...}: {
   nixpkgs.overlays = [
-    (final: prev: {
-      waybar-weather = final.callPackage ../pkgs/waybar-weather.nix {};
-    })
-
     #  Packages from the justaguylinux flake inputs (justaguy.dev/drew).
     #  Exposed through pkgs so modules consume pkgs.ghee / pkgs.butterpal
     #  instead of reaching into inputs.* directly.

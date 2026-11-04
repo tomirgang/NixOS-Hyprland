@@ -101,7 +101,6 @@
       };
       overlays = [localOverlay];
     };
-    waybarWeatherPkg = pkgs.callPackage ./pkgs/waybar-weather.nix {};
     hyprlandBindings = pkgs.callPackage ./pkgs/hyprland-python-bindings.nix {};
     hyprmodPkg = pkgs.callPackage ./pkgs/hyprmod.nix {
       hyprmodSrc = hyprmod-src;
@@ -177,7 +176,6 @@
       };
   in {
     packages.${system} = {
-      waybar-weather = waybarWeatherPkg;
       hyprmod = hyprmodPkg;
       inherit (pkgs) lean-ctx;
     };

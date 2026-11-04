@@ -4,7 +4,16 @@ A technical record of notable changes. Dates are in UTC.
 
 ## Nov 2026
 
+- Removed:
+    - `cava` from `modules/home/hyprland.nix`, since the bar no longer has a cava module
+        - Waybar now builds with `-Dcava=disabled`, which drops the `libcava`
+          vendoring shim and the cava 1.0.0 fetch
+    - `waybar-weather` package, its overlay and flake output
+    - Weather label from the hyprlock configs in `home/hyprlock/`
+    - `pyquery` from `hosts/frame/packages-fonts.nix`
 - Added:
+    - `waybar_refresh` bash alias in `home/tom.nix`, which sends `SIGUSR2` to the
+      running Waybar
     - `modules/hyprland.nix` for the system-level Hyprland session
         - `programs.hyprland` with UWSM and XWayland, and `programs.hyprlock`
         - `programs.waybar.enable = false`, since the dotfiles start Waybar themselves
