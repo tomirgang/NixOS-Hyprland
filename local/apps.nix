@@ -49,7 +49,6 @@ in {
     gimp
     inkscape
     digikam
-    calibre
     drawio
 
     # Media, audio
@@ -91,6 +90,11 @@ in {
     # Imaging (balena-etcher is not reliably in nixpkgs)
     bmaptool
     caligula
+
+    # PDF
+    zathura
+    okular
+    pdfstudio
   ];
 
   # Backend for gnome-calendar (home/tom.nix): calendar sources, reminders
