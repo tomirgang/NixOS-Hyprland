@@ -163,6 +163,10 @@ in {
     ethtool
     pciutils # lspci
     usbutils # lsusb
+
+    exercism
+
+    kind
   ];
 
   # KooL's initial-boot.sh sets Flat-Remix themes once, which are not
