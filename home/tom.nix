@@ -9,7 +9,7 @@
   # Update routine (NixOS_TODO.md, Phase 5), alias nix_update
   frameUpdate = pkgs.writeShellApplication {
     name = "frame-update";
-    runtimeInputs = with pkgs; [git nix nh vulnix coreutils];
+    runtimeInputs = with pkgs; [git nix nh vulnix coreutils curl gnupg gnused jq];
     text = builtins.readFile ./frame-update.sh;
   };
   # User-level tools (flatpak, rustup, cargo, go, uv, krew), then frame-update;
