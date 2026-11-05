@@ -3,6 +3,10 @@
 # the WireGuard network of infra2.0 through think; think forwards between the
 # LAN and wg0. Routes on a profile apply with that profile only.
 #
+# The Fritzbox announces itself as resolver through IPv6 router advertisements
+# and answers NXDOMAIN for think.do9ita.de; systemd-resolved accepts that and
+# never asks AdGuard from DHCP, so these profiles ignore the announced servers.
+#
 # The PSK stays out of the Nix store and out of Git: ensureProfiles substitutes
 # it at activation from the root-only environment file, which must exist before
 # the rebuild.
@@ -24,7 +28,10 @@ in {
           method = "auto";
           route1 = wg0Route;
         };
-        ipv6.method = "auto";
+        ipv6 = {
+          method = "auto";
+          ignore-auto-dns = true;
+        };
       };
       home-wifi = {
         connection = {
@@ -45,7 +52,10 @@ in {
           method = "auto";
           route1 = wg0Route;
         };
-        ipv6.method = "auto";
+        ipv6 = {
+          method = "auto";
+          ignore-auto-dns = true;
+        };
       };
     };
   };
