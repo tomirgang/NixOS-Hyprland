@@ -185,6 +185,7 @@
       frame = mkHost [
         ./hosts/frame/hardware.nix
         ./hosts/frame/luks.nix
+        ./hosts/frame/network.nix
         inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
       ];
 
