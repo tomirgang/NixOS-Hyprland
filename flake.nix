@@ -142,7 +142,7 @@
             ./local/dev.nix
             ./local/backup.nix
             ./local/electronics.nix
-            # ./local/secureboot.nix # Phase 5
+            ./local/secureboot.nix
 
             # Integrate Home Manager as a NixOS module
             inputs.home-manager.nixosModules.home-manager
