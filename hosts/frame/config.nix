@@ -54,6 +54,9 @@ in {
     hostName = host;
     networkmanager.enable = true;
     networkmanager.plugins = lib.mkForce []; # openvpn, openconnect when needed
+    # Global, so it also covers profiles not declared in network.nix. With power
+    # save on, the AX210 lost 6 to 17 % of its pings to the gateway.
+    networkmanager.wifi.powersave = false;
     timeServers = options.networking.timeServers.default;
   };
   services.resolved.enable = true;
