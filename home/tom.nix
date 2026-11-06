@@ -1,7 +1,7 @@
 # Home Manager for tom (NixOS.md 2.11): bash, git, gpg, CLI, user units, PATH.
 # The KooL-managed directories in ~/.config (hypr, waybar, rofi, kitty,
 # quickshell, starship, yazi, btop, ...) are not touched here, except the
-# hyprlock configs at the end of this file. Of the KooL
+# hyprlock configs and user_laptops.lua at the end of this file. Of the KooL
 # Home Manager modules only the Hyprland package set is used; git, btop, yazi,
 # ghostty, eza, tmux, nixvim and the overview would write into those
 # directories or clash with the settings below.
@@ -199,17 +199,22 @@ in {
     Install.WantedBy = ["default.target"];
   };
 
-  # hyprlock: the only KooL files in ~/.config/hypr managed here. Changed from
+  # hyprlock: besides user_laptops.lua the only KooL files in ~/.config/hypr
+  # managed here. Changed from
   # KooL: the input field shows the PAM prompt ($PAMPROMPT), so the lock
   # screen asks for the YubiKey PIN or the password, whichever PAM wants.
   # KooL's HyprlockWallpaperSelect.sh skips symlinked configs; the background
   # path .wallpaper_current is updated by that script anyway.
-  xdg.configFile = builtins.listToAttrs (map (name: {
-      name = "hypr/${name}";
-      value.source = ./hyprlock/${name};
-    }) [
-      "hyprlock.conf"
-      "hyprlock-2k.conf"
-      "hyprlock-1080p.conf"
-    ]);
+  xdg.configFile =
+    builtins.listToAttrs (map (name: {
+        name = "hypr/${name}";
+        value.source = ./hyprlock/${name};
+      }) [
+        "hyprlock.conf"
+        "hyprlock-2k.conf"
+        "hyprlock-1080p.conf"
+      ])
+    # Lid handling: KooL's copy switches the panel off without an external
+    # monitor and its binds do not fire on the lock screen.
+    // {"hypr/UserConfigs/user_laptops.lua".source = ./hypr/user_laptops.lua;};
 }
