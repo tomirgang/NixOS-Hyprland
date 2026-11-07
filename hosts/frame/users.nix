@@ -1,5 +1,5 @@
 # User tom. Login shell bash (NixOS.md 2.11); groups from Debian minus
-# libvirt, plugdev, netdev (no such groups on NixOS or no longer needed).
+# libvirt, netdev (no such groups on NixOS or no longer needed).
 {
   pkgs,
   username,
@@ -23,7 +23,7 @@ in {
         "scanner"
         "lp"
         "kvm"
-        # docker, wireshark, sispmctl: added by the modules that create the groups
+        # docker, wireshark, sispmctl, plugdev: added by the modules that create the groups
       ];
     };
   };

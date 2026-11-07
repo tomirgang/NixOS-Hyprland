@@ -60,6 +60,8 @@ in {
     timeServers = options.networking.timeServers.default;
   };
   services.resolved.enable = true;
+  # Avahi is the mDNS stack here; a second responder on port 5353 makes it unreliable.
+  services.resolved.settings.Resolve.MulticastDNS = false;
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -76,6 +78,7 @@ in {
       enable = false;
       xkb.layout = keyboardLayout;
     };
+    colord.enable = true; # cups registers printer colour profiles here
     gvfs.enable = true;
     tumbler.enable = true;
     udisks2.enable = true; # MountFrameData.sh
@@ -105,10 +108,7 @@ in {
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
-    settings.General = {
-      Enable = "Source,Sink,Media,Socket";
-      Experimental = true;
-    };
+    settings.General.Experimental = true;
   };
 
   security.rtkit.enable = true;

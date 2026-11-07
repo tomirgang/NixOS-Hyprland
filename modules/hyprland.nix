@@ -64,9 +64,10 @@
   # authentication fails with "no agent is available". Restart the agent of
   # the user session once polkitd is ready again. try-restart is a no-op when
   # the agent is not running; without a user manager (boot) the call fails and
-  # the leading "-" ignores it.
+  # the leading "-" ignores it. "+" runs it as root, because polkit.service runs
+  # as polkituser, which gets "Permission denied" on the machine transport.
   systemd.services.polkit.serviceConfig.ExecStartPost = [
-    "-${config.systemd.package}/bin/systemctl --user --machine=${username}@.host try-restart hyprpolkitagent.service"
+    "+-${config.systemd.package}/bin/systemctl --user --machine=${username}@.host try-restart hyprpolkitagent.service"
   ];
 
   # Session-level helpers that the programs.hyprland module does not provide on
