@@ -25,6 +25,20 @@
   programs.hyprland = {
     enable = true;
     withUWSM = true;
+    # CCompositor::cleanup() resets g_pInputManager before the last monitor
+    # reference goes away. The workspace of that monitor then destroys its
+    # scrolling layout, whose fullscreen handler calls unconstrainMouse() on the
+    # NULL manager: segfault on every session end (0.57.1). substituteInPlace
+    # fails the build once upstream changes the line; drop the override then.
+    package = pkgs.hyprland.overrideAttrs (old: {
+      postPatch =
+        (old.postPatch or "")
+        + ''
+          substituteInPlace src/layout/algorithm/tiled/scrolling/ScrollingFullscreenHandler.cpp \
+            --replace-fail 'g_pInputManager->unconstrainMouse();' \
+                           'if (g_pInputManager) g_pInputManager->unconstrainMouse();'
+        '';
+    });
     # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # hyprland-git
     # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdph-git
     xwayland.enable = true;

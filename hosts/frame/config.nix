@@ -85,6 +85,10 @@ in {
       alsa.support32Bit = true;
       pulse.enable = true;
       wireplumber.enable = true;
+      # module-x11-bell segfaults on session end: the X11 I/O error exit handler
+      # runs twice and the second run destroys a NULL source (pipewire 1.6.9).
+      # The module only plays the bell of Xwayland clients.
+      extraConfig.pipewire."99-no-x11-bell"."context.properties"."module.x11.bell" = false;
     };
     pulseaudio.enable = false;
     envfs.enable = true;
