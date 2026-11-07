@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793653143,
-        "narHash": "sha256-Qdlm3LxAWgd0O4wP0gWl+YerlUY6VMa1uEoeTKNs3ck=",
+        "lastModified": 1793987880,
+        "narHash": "sha256-gLrP4RdjY9HuvEFfszvFucSAokhuhmjdBkMCqP9pteE=",
         "ref": "refs/heads/main",
-        "rev": "2904e384afc02182018b4eef77867f12607fe047",
-        "revCount": 7,
+        "rev": "7c40f92837b49792b555d226bc447af60b157a2a",
+        "revCount": 8,
         "type": "git",
         "url": "https://justaguy.dev/drew/butterpal"
       },
@@ -47,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793368344,
-        "narHash": "sha256-ojN7KpXLYv6NgJ2OMn7cPioc46g7UB1pd4tBf//3S1U=",
+        "lastModified": 1794001184,
+        "narHash": "sha256-i2+b4Rdp7/yIcVESrp0tzS97FkTuTJxIlqNOTjoswfk=",
         "owner": "catppuccin",
         "repo": "nix",
-        "rev": "feac189528d08ca7c46bf1605d84b78ea5fe8263",
+        "rev": "5a735352cd3535d43109415bcbb512a72304226a",
         "type": "github"
       },
       "original": {
@@ -172,11 +172,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793328047,
-        "narHash": "sha256-azXMJahp4yYvuhgO3Q9ibSYTXYsVIs5snQb19wDUArk=",
+        "lastModified": 1793987904,
+        "narHash": "sha256-9s7u0GasR2XYYt6cfLoR6GylCss+9Uz/OGiAdYIDdug=",
         "ref": "refs/heads/main",
-        "rev": "07b362e41225f29ced42a05026bba1e44d58f979",
-        "revCount": 19,
+        "rev": "36b7822948a8e664d805a2e6effb8abddd82e69f",
+        "revCount": 20,
         "type": "git",
         "url": "https://justaguy.dev/drew/ghee"
       },
@@ -192,11 +192,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793757180,
-        "narHash": "sha256-gyV7AtCwLnOImcrfSETP4J3Ie96bz19DY47B7m7Y3HM=",
+        "lastModified": 1793979366,
+        "narHash": "sha256-7OoWDsYO9teiPxl0QdlS5lYE20Pue8/5mpscSL32FUA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b787c48e2ec57a9d098f5c2721882a3bc1e16f97",
+        "rev": "2c0c1f01521469cf0271180c453c79782d53c2f6",
         "type": "github"
       },
       "original": {
@@ -462,11 +462,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793901591,
-        "narHash": "sha256-yn/H5T8UZlnm1WJXwbPYolzX8Z5IiUMbrvs1LGxJYgI=",
+        "lastModified": 1793905441,
+        "narHash": "sha256-qxqnXm27fDAlXXGAVXg/0Se8U7fMkCEgpRpD1QTr01M=",
         "owner": "alexays",
         "repo": "waybar",
-        "rev": "67ccdb075f2e366c3aac80dd5b0102319b5cdee3",
+        "rev": "f49ec82e2d296f033b081fd36d12297795b017dc",
         "type": "github"
       },
       "original": {
