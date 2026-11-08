@@ -98,9 +98,20 @@ in {
     fstrim.enable = true;
     libinput.enable = true;
     blueman.enable = true;
+    # Nur die interne NVMe ueberwachen. Ohne autodetect bleibt die
+    # Framework 1TB Expansion Card (USB, ASMedia-Bridge) aussen vor: ihre
+    # NVMe-Passthrough-Befehle (SCSI-Opcode 0xe6) laufen in Timeouts, loesen
+    # UAS-Resets aus, verzoegern den smartd-Start um ca. 60 s und liefern
+    # falsche Werte (Available Spare springt zwischen 100 und 0).
     smartd = {
       enable = true;
-      autodetect = true;
+      autodetect = false;
+      devices = [
+        {
+          device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S6Z2NF0W724852K";
+          options = "-d nvme";
+        }
+      ];
     };
     flatpak.enable = true; # fallback only, no apps, no remote (NixOS.md 2.14)
   };
