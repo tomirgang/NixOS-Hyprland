@@ -29,5 +29,18 @@
         };
       });
     })
+
+    # mcat-unwrapped 0.6.7 fails since nixpkgs f4a03c0 (2026-11-07): the cargo
+    # setup hook (cargoUseSystemLibs) now exports AWS_LC_SYS_USE_SYSTEM=1 and
+    # RUSTONIG_SYSTEM_LIBONIG=1, but the package declares neither aws-lc,
+    # oniguruma nor pkg-config (both build scripts discover the system library
+    # via pkg-config), so aws-lc-sys and onig_sys panic. Supply all three.
+    # TODO: remove once nixpkgs fixes mcat-unwrapped.
+    (final: prev: {
+      mcat-unwrapped = prev.mcat-unwrapped.overrideAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.pkg-config];
+        buildInputs = (old.buildInputs or []) ++ [final.aws-lc final.oniguruma];
+      });
+    })
   ];
 }
