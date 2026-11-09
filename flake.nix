@@ -11,6 +11,15 @@
   description = "KoolDots -- NixOS-Hyprland (host frame)";
 
   inputs = {
+    #  Release switch (target NixOS 26.11, frame-update reports when the
+    #  branches exist). Switch these together, then `nix flake update`:
+    #    nixpkgs       nixos-unstable -> nixos-YY.MM
+    #    home-manager  master         -> release-YY.MM (else HM release check warns)
+    #    nixvim        main           -> nixos-YY.MM
+    #    catppuccin    default branch -> tag vYY.MM
+    #    lanzaboote    default branch -> newest release tag (Secure Boot tooling)
+    #  waybar, ghee, butterpal follow nixpkgs from their default branch and may
+    #  need a newer toolchain than the stable release. stateVersion stays.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
