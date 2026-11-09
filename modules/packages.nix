@@ -155,7 +155,7 @@
     yazi
     yt-dlp
 
-    (inputs.ags.packages.${pkgs.stdenv.hostPlatform.system}.default)
+    # frame: ags v1 removed (flake.nix); the KooL overview uses Quickshell
 
     # Utils
     ctop # container top

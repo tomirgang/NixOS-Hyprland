@@ -30,13 +30,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ags = {
-      type = "github";
-      owner = "aylur";
-      repo = "ags";
-      ref = "v1";
-    };
-
+    #  frame: ags v1 removed. It pinned its own nixpkgs (2024-09) and pulled
+    #  outdated glibc/openssl/curl into the system; v1 does not run on current
+    #  glib (GIRepository-2.0 gone). The overview runs on Quickshell.
     catppuccin = {
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -80,7 +76,6 @@
   outputs = inputs @ {
     self,
     nixpkgs,
-    ags,
     hyprmod-src,
     ...
   }: let
