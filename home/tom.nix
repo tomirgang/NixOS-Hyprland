@@ -9,7 +9,9 @@
   # Update routine (NixOS_TODO.md, Phase 5), alias nix_update
   frameUpdate = pkgs.writeShellApplication {
     name = "frame-update";
-    runtimeInputs = with pkgs; [git nix nh vulnix coreutils curl gnupg gnused jq];
+    # sbomnix provides vulnxscan (bundles vulnix and grype, queries OSV)
+    runtimeInputs = with pkgs; [git nix nh sbomnix python3 coreutils curl gnupg gnused jq];
+    runtimeEnv.VULNXSCAN_REPORT = "${./vulnxscan-report.py}";
     text = builtins.readFile ./frame-update.sh;
   };
   # User-level tools (flatpak, rustup, cargo, go, uv, krew), then frame-update;

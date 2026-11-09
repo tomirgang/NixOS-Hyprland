@@ -1,0 +1,2 @@
+"vuln_id","package","version_local","version_local_regex","comment"
+".*","","",".*-tex","TeX Live package (version suffix -tex); CVE belongs to an unrelated project of the same name (plantuml, navigator, gmp, ...)"
