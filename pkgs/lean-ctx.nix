@@ -15,6 +15,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-s427K/sYGjROYx6bSlf16GAUubDYnGA0z9X2/aM9Rx0=";
 
+  # Since nixpkgs f4a03c0 the cargo setup hook forces *-sys crates onto system
+  # libraries (zstd, aws-lc, a sentinel JEMALLOC_OVERRIDE). lean-ctx needs the
+  # vendored, symbol-prefixed jemalloc, so keep the vendored build as before.
+  dontCargoUseSystemLibs = true;
+
   doCheck = false; # tests need network and a writable home
 
   meta = {

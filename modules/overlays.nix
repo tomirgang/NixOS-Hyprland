@@ -42,5 +42,16 @@
         buildInputs = (old.buildInputs or []) ++ [final.aws-lc final.oniguruma];
       });
     })
+
+    # lstr 0.4.0 fails for the same reason since nixpkgs f4a03c0: the hook
+    # exports LIBGIT2_NO_VENDOR=1, but the package only declares openssl, so
+    # libgit2-sys finds no libgit2.pc and panics. Supply libgit2.
+    # TODO: remove once nixpkgs fixes lstr.
+    (final: prev: {
+      lstr = prev.lstr.overrideAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.pkg-config];
+        buildInputs = (old.buildInputs or []) ++ [final.libgit2];
+      });
+    })
   ];
 }
