@@ -1,6 +1,10 @@
 # Desktop applications and system tools (NixOS.md 2.12, way S).
 # Flatpak stays enabled as fallback only (hosts/frame/config.nix).
-{pkgs, ...}: let
+{
+  pkgs,
+  username,
+  ...
+}: let
   # gnome-calendar opens "Open in Settings" and the online account link via
   # the D-Bus name org.gnome.Settings (action launch-panel). GNOME Settings
   # hides panels whose desktop file says OnlyShowIn=GNOME, which applies to
@@ -20,6 +24,12 @@
     '';
   };
 in {
+  # home-manager-<user>.service runs at boot before the user session exists.
+  # Its dconf step starts a private D-Bus via dbus-run-session; GIO then spawns
+  # gvfsd, which without XDG_RUNTIME_DIR mounts gvfsd-fuse at ~/.gvfs and
+  # crashes. The orphaned mount answers every stat with ECONNREFUSED and
+  # breaks file managers listing the home directory. Local VFS only here.
+  systemd.services."home-manager-${username}".environment.GIO_USE_VFS = "local";
   environment.systemPackages = with pkgs; [
     # Browser, mail, feeds
     chromium
@@ -137,6 +147,9 @@ in {
     "x-scheme-handler/https" = "google-chrome.desktop";
     "x-scheme-handler/about" = "google-chrome.desktop";
     "x-scheme-handler/unknown" = "google-chrome.desktop";
+    # Without this entry xdg-open on a directory takes the first match from
+    # the mimeinfo.cache of the user profile, which is nnn (terminal).
+    "inode/directory" = "thunar.desktop";
   };
   environment.sessionVariables.EDITOR = "vim";
   environment.sessionVariables.VISUAL = "code --wait";

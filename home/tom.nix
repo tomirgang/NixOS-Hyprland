@@ -219,4 +219,15 @@ in {
     # Lid handling: KooL's copy switches the panel off without an external
     # monitor and its binds do not fire on the lock screen.
     // {"hypr/UserConfigs/user_laptops.lua".source = ./hypr/user_laptops.lua;};
+
+  # Dolphin and Thunar both ship a D-Bus service for org.freedesktop.FileManager1
+  # ("Show in folder" in Chrome and other apps). dbus-broker reads
+  # $XDG_DATA_HOME/dbus-1/services before the system directories, so this file
+  # makes Thunar the provider regardless of which package is listed first.
+  xdg.dataFile."dbus-1/services/org.freedesktop.FileManager1.service".text = ''
+    [D-BUS Service]
+    Name=org.freedesktop.FileManager1
+    Exec=/run/current-system/sw/bin/Thunar --gapplication-service
+    SystemdService=thunar.service
+  '';
 }
