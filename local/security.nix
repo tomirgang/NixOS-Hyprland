@@ -1,10 +1,32 @@
 # YubiKey, PAM-U2F, GnuPG, greetd, firewall, SSH (NixOS.md 2.6, 2.7)
 {
+  config,
   pkgs,
   lib,
   username,
   ...
-}: {
+}: let
+  # pam_u2f does not wait for a device: without the YubiKey it fails at once
+  # and pam_unix asks for the password. At the greetd login after boot the
+  # key gets 120 s to show up first, the same time as token-timeout for the
+  # LUKS unlock (hosts/frame/luks.nix). Always exits 0, the rule is optional;
+  # after the timeout pam_u2f finds no device and the password prompt follows.
+  # pam_exec passes only the PAM environment, so PATH is set here.
+  yubikeyWait = pkgs.writeShellScript "yubikey-wait" ''
+    PATH=${lib.makeBinPath [pkgs.coreutils pkgs.gnugrep]}
+    present() {
+      ${pkgs.libfido2-nopcsc}/bin/fido2-token -L 2>/dev/null | grep -q '^/dev/hidraw'
+    }
+    present && exit 0
+    echo "YubiKey not found, waiting up to 2 minutes"
+    for ((i = 0; i < 120; i++)); do
+      sleep 1
+      present && exit 0
+    done
+    echo "No YubiKey, password login"
+    exit 0
+  '';
+in {
   # YubiKey (OTP, U2F, CCID)
   services.pcscd.enable = true;
   services.udev.packages = [pkgs.yubikey-personalization];
@@ -63,6 +85,14 @@
   in {
     login = u2fLogin;
     hyprlock = u2fLogin;
+    # Only greetd waits; login itself (tty), hyprlock and sudo fall back to
+    # the password at once. Runs before the login substack with pam_u2f.
+    greetd.rules.auth.yubikey-wait = {
+      order = config.security.pam.services.greetd.rules.auth.login.order - 50;
+      control = "optional";
+      modulePath = "${config.security.pam.package}/lib/security/pam_exec.so";
+      args = ["quiet" "stdout" "${yubikeyWait}"];
+    };
     sudo.u2fAuth = true;
     polkit-1.u2fAuth = true;
     sshd = {
