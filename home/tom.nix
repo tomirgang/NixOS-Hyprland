@@ -171,6 +171,7 @@ in {
     ethtool
     pciutils # lspci
     usbutils # lsusb
+    gnome-disk-utility
 
     exercism
 
@@ -185,6 +186,7 @@ in {
 
     #Android
     android-tools
+    rkflashtool
   ];
 
   # KooL's initial-boot.sh sets Flat-Remix themes once, which are not
