@@ -182,6 +182,9 @@ in {
     zathura
     kdePackages.okular
     pdfarranger
+
+    #Android
+    android-tools
   ];
 
   # KooL's initial-boot.sh sets Flat-Remix themes once, which are not
