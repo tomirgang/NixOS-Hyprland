@@ -196,7 +196,11 @@
     # cpu-x
     cyme # list USB devices - very handy
     gdu # Dusk usage
-    glances # system monitor tool
+    # system monitor tool; python-jose (CVE-2026-120459) is optional and only
+    # needed for JWT auth of the REST API, so it is dropped here
+    (glances.overridePythonAttrs (old: {
+      dependencies = builtins.filter (d: (d.pname or "") != "python-jose") old.dependencies;
+    }))
     gping # Graphical ping tool
     htop # system monitor tool
     # hyfetch
