@@ -5,7 +5,11 @@
 # Home Manager modules only the Hyprland package set is used; git, btop, yazi,
 # ghostty, eza, tmux, nixvim and the overview would write into those
 # directories or clash with the settings below.
-{pkgs, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   # Update routine (NixOS_TODO.md, Phase 5), alias nix_update
   frameUpdate = pkgs.writeShellApplication {
     name = "frame-update";
@@ -206,6 +210,34 @@ in {
     Install.WantedBy = ["default.target"];
   };
 
+  # Nextcloud Desktop syncs into /run/media/tom/FrameData/tom/Nextcloud. The
+  # client starts once MountFrameData.sh has mounted FrameData (WantedBy on the
+  # mount unit, which the user manager sees through /proc/self/mountinfo) and
+  # stops when it is unmounted (BindsTo). The client ignores SIGTERM, so it is
+  # stopped with --quit. ExecStartPre waits up to 30 s for waybar's
+  # StatusNotifierWatcher, otherwise Qt registers the tray icon too early.
+  systemd.user.services.nextcloud-client = {
+    Unit = {
+      Description = "Nextcloud Desktop (after FrameData mount)";
+      BindsTo = ["run-media-tom-FrameData.mount"];
+      After = ["run-media-tom-FrameData.mount" "graphical-session.target"];
+      PartOf = ["graphical-session.target"];
+      ConditionPathIsDirectory = "/run/media/tom/FrameData/tom/Nextcloud";
+    };
+    Service = {
+      ExecStartPre = "-${pkgs.writeShellScript "wait-tray" ''
+        for ((i = 0; i < 300; i++)); do
+          ${pkgs.systemd}/bin/busctl --user status org.kde.StatusNotifierWatcher >/dev/null 2>&1 && exit 0
+          ${pkgs.coreutils}/bin/sleep 0.1
+        done
+      ''}";
+      ExecStart = "${pkgs.nextcloud-client}/bin/nextcloud --background";
+      ExecStop = "${pkgs.nextcloud-client}/bin/nextcloud --quit";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    Install.WantedBy = ["run-media-tom-FrameData.mount"];
+  };
   # hyprlock: besides user_laptops.lua the only KooL files in ~/.config/hypr
   # managed here. Changed from
   # KooL: the input field shows the PAM prompt ($PAMPROMPT), so the lock
@@ -223,7 +255,15 @@ in {
       ])
     # Lid handling: KooL's copy switches the panel off without an external
     # monitor and its binds do not fire on the lock screen.
-    // {"hypr/UserConfigs/user_laptops.lua".source = ./hypr/user_laptops.lua;};
+    // {"hypr/UserConfigs/user_laptops.lua".source = ./hypr/user_laptops.lua;}
+    # Mask the unit systemd-xdg-autostart-generator builds from
+    # ~/.config/autostart/Nextcloud.desktop. The client rewrites that file
+    # after updates and when "Launch on system startup" is toggled; the client
+    # itself is started by nextcloud-client.service above.
+    // {
+      "systemd/user/app-Nextcloud@autostart.service".source =
+        config.lib.file.mkOutOfStoreSymlink "/dev/null";
+    };
 
   # Dolphin and Thunar both ship a D-Bus service for org.freedesktop.FileManager1
   # ("Show in folder" in Chrome and other apps). dbus-broker reads
