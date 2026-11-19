@@ -35,6 +35,7 @@
     lua5_4
     gnumake
     gcc
+    clang-tools # clangd with Nix include paths, used by Zed
     nil
     nixd
     nixfmt
