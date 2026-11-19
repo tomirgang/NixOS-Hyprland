@@ -188,9 +188,13 @@ in {
     kdePackages.okular
     pdfarranger
 
-    #Android
+    # Android
     android-tools
     rkflashtool
+
+    # Find duplicates
+    czkawka
+    ffmpeg
   ];
 
   # KooL's initial-boot.sh sets Flat-Remix themes once, which are not

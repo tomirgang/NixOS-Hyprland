@@ -38,14 +38,20 @@
     brightnessctl
   ];
 
-  # No suspend, no hibernation. Closing the lid only locks.
+  # Suspend to RAM (S3, "deep") on lid close, on battery and on the charger.
+  # Docked (external monitor connected) the lid is ignored, the session stays
+  # on the dock monitors. hypridle locks before sleep (before_sleep_cmd).
+  # No hibernation: there is no disk swap, only zram.
   services.logind.settings.Login = {
-    HandleLidSwitch = "lock";
-    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "suspend";
     HandleLidSwitchDocked = "ignore";
   };
   systemd.sleep.settings.Sleep = {
-    AllowSuspend = "no";
+    AllowSuspend = "yes";
+    SuspendState = "mem";
+    # Kernel default is s2idle; deep is offered by the firmware.
+    MemorySleepMode = "deep";
     AllowHibernation = "no";
     AllowHybridSleep = "no";
     AllowSuspendThenHibernate = "no";
