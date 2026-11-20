@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794521026,
-        "narHash": "sha256-WS2Q+9xMgTvRySmd7KuQw1h85syoaHeghahUNau+HCM=",
+        "lastModified": 1795118184,
+        "narHash": "sha256-s8nX3v+7hWSz7IbaFkHDadCinYil4uow0gabUHlSFzc=",
         "ref": "refs/heads/main",
-        "rev": "cca9cb1a8963304afb64ea19827ae50a59adf12e",
-        "revCount": 9,
+        "rev": "3657c711dea7822df9d4387cf229a47fd4a2fa73",
+        "revCount": 11,
         "type": "git",
         "url": "https://justaguy.dev/drew/butterpal"
       },
@@ -152,11 +152,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793987904,
-        "narHash": "sha256-9s7u0GasR2XYYt6cfLoR6GylCss+9Uz/OGiAdYIDdug=",
+        "lastModified": 1795126385,
+        "narHash": "sha256-99uXluD2kvzTQXpreYk/DJ0wyYV7NoeUE466J1naeqU=",
         "ref": "refs/heads/main",
-        "rev": "36b7822948a8e664d805a2e6effb8abddd82e69f",
-        "revCount": 20,
+        "rev": "78c6ec0ef4b745a3353931a634c302fd1bf8f8e2",
+        "revCount": 25,
         "type": "git",
         "url": "https://justaguy.dev/drew/ghee"
       },
