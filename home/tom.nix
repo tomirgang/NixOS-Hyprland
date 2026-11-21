@@ -195,6 +195,9 @@ in {
     # Find duplicates
     czkawka
     ffmpeg
+
+    # Office
+    libreoffice
   ];
 
   # KooL's initial-boot.sh sets Flat-Remix themes once, which are not
